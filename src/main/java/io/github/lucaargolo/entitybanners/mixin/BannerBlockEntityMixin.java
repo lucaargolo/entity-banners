@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,7 +54,8 @@ public class BannerBlockEntityMixin extends BlockEntity implements Tickable {
         if(this.world != null && !this.world.isClient && entitybanners_Entity != null) {
             if(entitybanners_TickDelay >= 20) {
                 entitybanners_TickDelay = 0;
-                Box effectArea = new Box(pos.getX()-48, pos.getY()-48, pos.getZ()-48, pos.getX()+48, pos.getY()+48, pos.getZ()+48);
+                int r = EntityBanners.INSTANCE.getCONFIG().getBannerRadius();
+                Box effectArea = new Box(pos.getX()-r, pos.getY()-r, pos.getZ()-r, pos.getX()+r, pos.getY()+r, pos.getZ()+r);
                 List<ServerPlayerEntity> players = this.world.getNonSpectatingEntities(ServerPlayerEntity.class, effectArea);
                 players.forEach(player -> EntityBanners.INSTANCE.onPlayerNearBanner(player, entitybanners_Entity));
             }else{
