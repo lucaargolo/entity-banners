@@ -56,7 +56,7 @@ object EntityBannersClient: ClientModInitializer {
                 val mouseY = (client.mouse.y * client.window.scaledHeight.toDouble() / client.window.height.toDouble()).toInt()
                 val x = screenX - 124
                 val y = screenY + j * index
-                if (mouseX >= x && mouseX <= x + 140 && mouseY >= y && mouseY <= y + 32) {
+                if (mouseX >= x && mouseX <= x + 120 && mouseY >= y && mouseY <= y + 32) {
                     val textList: MutableList<Text> = ArrayList()
                     textList.add(TranslatableText("tooltip.entitybanners.status_effect1").formatted(Formatting.DARK_PURPLE))
                     textList.add(TranslatableText("tooltip.entitybanners.status_effect2").formatted(Formatting.DARK_PURPLE))

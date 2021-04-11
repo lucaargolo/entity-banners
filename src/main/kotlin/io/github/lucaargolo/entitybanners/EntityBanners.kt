@@ -9,6 +9,7 @@ import io.github.lucaargolo.entitybanners.network.PacketCompendium
 import io.github.lucaargolo.entitybanners.utils.*
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
@@ -21,6 +22,9 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.Item
 import net.minecraft.item.SpawnEggItem
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.stat.Stats
+import net.minecraft.text.TranslatableText
+import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
@@ -114,6 +118,17 @@ object EntityBanners: ModInitializer {
                 serverPlayerEntity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE)?.removeModifier(DAMAGE_INCREASE_50)
             }
             BannerAttackerHolder.set.clear()
+        }
+        ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register { world, entity, livingEntity ->
+            (entity as? ServerPlayerEntity)?.let { player ->
+                REGISTERED_PATTERNS[livingEntity.type]?.let { loomPattern ->
+                    val killed = player.statHandler.getStat(Stats.KILLED, livingEntity.type)
+                    if (killed % 50 == 0) {
+                        player.sendMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), false)
+                        player.inventory.offerOrDrop(world, ENTITY_BANNER_ITEM.getPatternStack(loomPattern))
+                    }
+                }
+            }
         }
     }
 

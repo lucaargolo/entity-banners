@@ -5,6 +5,8 @@
 
   "item.entitybanners.entity_banner": "%s Banner",
 
+  "chat.entitybanners.killed_n_entities": "%s has defeated the %sth %s!",
+
   "tooltip.entitybanners.nearby_players1": "Nearby players get a bonus",
   "tooltip.entitybanners.nearby_players2": "against: %s",
 
