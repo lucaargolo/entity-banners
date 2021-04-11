@@ -124,7 +124,7 @@ object EntityBanners: ModInitializer {
         ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register { serverWorld, entity, livingEntity ->
             (entity as? ServerPlayerEntity)?.let { player ->
                 REGISTERED_PATTERNS[livingEntity.type]?.let { loomPattern ->
-                    val killed = player.statHandler.getStat(Stats.KILLED, livingEntity.type)
+                    val killed = player.statHandler.getStat(Stats.KILLED.getOrCreateStat(livingEntity.type))
                     if (killed % CONFIG.necessaryKills == 0) {
                         serverWorld.server.playerManager.broadcastChatMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), MessageType.CHAT, Util.NIL_UUID)
                         player.inventory.offerOrDrop(serverWorld, ENTITY_BANNER_ITEM.getPatternStack(loomPattern))

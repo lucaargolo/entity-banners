@@ -7,7 +7,8 @@
     "BannerBlockEntityMixin",
     "DyeColorAccessor",
     "RegistryMixin",
-    "ServerPlayerEntityMixin"
+    "ServerPlayerEntityMixin",
+    "SpawnEggItemAccessor"
   ],
   "client": [
     "AbstractInventoryScreenMixin",
