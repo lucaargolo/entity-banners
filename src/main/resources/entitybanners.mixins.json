@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.lucaargolo.entitybanners.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BannerBlockEntityMixin",
+    "DyeColorAccessor",
+    "RegistryMixin",
+    "ServerPlayerEntityMixin"
+  ],
+  "client": [
+    "AbstractInventoryScreenMixin",
+    "BannerBlockEntityRendererMixin",
+    "MinecraftClientMixin",
+    "StatusEffectUtilMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

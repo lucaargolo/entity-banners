@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "entitybanners",
+  "version": "${mod_version}",
+  "name": "Entity Banners",
+  "description": "A mod strongly inspired by Terraria, which adds entity specific banners that increase damage and defense against the entity for players nearby.",
+  "authors": [
+    "D4rkness_King"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/entity-banners",
+    "sources": "https://github.com/lucaargolo/entity-banners",
+    "issues": "https://github.com/lucaargolo/entity-banners/issues"
+  },
+
+  "license": "Mozilla Public License 2.0",
+  "icon": "assets/entitybanners/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "io.github.lucaargolo.entitybanners.EntityBanners"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "io.github.lucaargolo.entitybanners.client.EntityBannersClient"
+      }
+    ]
+  },
+  "mixins": [
+    "entitybanners.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": ">=0.32.0+1.16",
+    "fabric-language-kotlin": ">=1.5.0+kotlin.1.4.31",
+    "minecraft": "1.16.x"
+  }
+}
