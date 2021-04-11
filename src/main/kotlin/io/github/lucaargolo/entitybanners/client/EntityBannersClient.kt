@@ -5,7 +5,6 @@ import io.github.lucaargolo.entitybanners.network.PacketCompendium
 import io.github.lucaargolo.entitybanners.utils.EntityBannerStatusEffectHolders
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.entity.EntityRenderDispatcher
