@@ -26,7 +26,7 @@ public class ServerPlayerEntityMixin {
         if(entity instanceof LivingEntity) {
             LinkedHashMap<EntityType<?>, Integer> map = EntityBannerStatusEffectHolders.Server.INSTANCE.getMap().get(this);
             if(map != null && map.containsKey(entity.getType())) {
-                return amount*0.75f;
+                return amount*EntityBanners.INSTANCE.getCONFIG().getDefenseMultiplier();
             }
         }
         return amount;
@@ -38,7 +38,7 @@ public class ServerPlayerEntityMixin {
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) ((Object) this);
         LinkedHashMap<EntityType<?>, Integer> map = EntityBannerStatusEffectHolders.Server.INSTANCE.getMap().get(serverPlayerEntity);
         if(map != null && map.containsKey(target.getType())) {
-            serverPlayerEntity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE).addTemporaryModifier(EntityBanners.INSTANCE.getDAMAGE_INCREASE_50());
+            serverPlayerEntity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE).addTemporaryModifier(EntityBanners.INSTANCE.getDAMAGE_INCREASE());
             BannerAttackerHolder.INSTANCE.getSet().add(serverPlayerEntity);
         }
     }

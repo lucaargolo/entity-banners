@@ -21,11 +21,13 @@ import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.Item
 import net.minecraft.item.SpawnEggItem
+import net.minecraft.network.MessageType
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.stat.Stats
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
+import net.minecraft.util.Util
 import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -75,7 +77,7 @@ object EntityBanners: ModInitializer {
     val ENTITY_BANNER_ITEM: EntityBannerItem = Registry.register(Registry.ITEM, ModIdentifier("entity_banner"), EntityBannerItem(Item.Settings().maxCount(16)))
     val ENTITY_BANNER_STATUS_EFFECT: EntityBannerStatusEffect = Registry.register(Registry.STATUS_EFFECT, ModIdentifier("entity_banner_status_effect"), EntityBannerStatusEffect())
 
-    val DAMAGE_INCREASE_50 = EntityAttributeModifier(UUID.fromString("7a0af36c-0f98-4627-8476-42c352bf3047"), "Entity Banners 50% Damage Increase", 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
+    val DAMAGE_INCREASE = EntityAttributeModifier(UUID.fromString("7a0af36c-0f98-4627-8476-42c352bf3047"), "Entity banners damage increase", CONFIG.damageMultiplier, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
 
     private var tickDelay = 0
 
@@ -115,17 +117,17 @@ object EntityBanners: ModInitializer {
                 tickDelay++
             }
             BannerAttackerHolder.set.forEach { serverPlayerEntity ->
-                serverPlayerEntity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE)?.removeModifier(DAMAGE_INCREASE_50)
+                serverPlayerEntity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE)?.removeModifier(DAMAGE_INCREASE)
             }
             BannerAttackerHolder.set.clear()
         }
-        ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register { world, entity, livingEntity ->
+        ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register { serverWorld, entity, livingEntity ->
             (entity as? ServerPlayerEntity)?.let { player ->
                 REGISTERED_PATTERNS[livingEntity.type]?.let { loomPattern ->
                     val killed = player.statHandler.getStat(Stats.KILLED, livingEntity.type)
-                    if (killed % 50 == 0) {
-                        player.sendMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), false)
-                        player.inventory.offerOrDrop(world, ENTITY_BANNER_ITEM.getPatternStack(loomPattern))
+                    if (killed % CONFIG.necessaryKills == 0) {
+                        serverWorld.server.playerManager.broadcastChatMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), MessageType.CHAT, Util.NIL_UUID)
+                        player.inventory.offerOrDrop(serverWorld, ENTITY_BANNER_ITEM.getPatternStack(loomPattern))
                     }
                 }
             }
@@ -137,7 +139,7 @@ object EntityBanners: ModInitializer {
     }
 
     fun onEntityRegistered(entityType: EntityType<*>, id: Identifier) {
-        if(entityType.spawnGroup != SpawnGroup.MISC) {
+        if(entityType.spawnGroup != SpawnGroup.MISC && CONFIG.blacklistedEntities.contains(id.toString())) {
             REGISTERED_PATTERNS[entityType] = Registry.register(LoomPatterns.REGISTRY, Identifier("${id}_banner"), EntityLoomPattern(entityType))
         }
     }
