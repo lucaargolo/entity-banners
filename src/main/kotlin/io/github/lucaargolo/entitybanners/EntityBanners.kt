@@ -20,6 +20,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.Item
+import net.minecraft.item.ItemGroup
 import net.minecraft.item.SpawnEggItem
 import net.minecraft.network.MessageType
 import net.minecraft.server.network.ServerPlayerEntity
@@ -71,6 +72,10 @@ object EntityBanners: ModInitializer {
         finalConfig
     }
 
+    val CREATIVE_TAB: ItemGroup by lazy {
+        FabricItemGroupBuilder.create(ModIdentifier("creative_tab")).icon{ ENTITY_BANNER_ITEM.defaultStack }.build()
+    }
+
     val REGISTERED_EGGS = linkedMapOf<EntityType<*>, SpawnEggItem>()
     val REGISTERED_PATTERNS = linkedMapOf<EntityType<*>, EntityLoomPattern>()
 
@@ -82,11 +87,6 @@ object EntityBanners: ModInitializer {
     private var tickDelay = 0
 
     override fun onInitialize() {
-        FabricItemGroupBuilder.create(ModIdentifier("creative_tab")).icon{ ENTITY_BANNER_ITEM.defaultStack }.appendItems {
-            it.addAll(REGISTERED_PATTERNS.map { (_, entityPattern) ->
-                ENTITY_BANNER_ITEM.getPatternStack(entityPattern)
-            })
-        }.build()
         ServerTickEvents.END_SERVER_TICK.register {
             if(tickDelay >= 20) {
                 tickDelay = 0
@@ -139,7 +139,7 @@ object EntityBanners: ModInitializer {
     }
 
     fun onEntityRegistered(entityType: EntityType<*>, id: Identifier) {
-        if(entityType.spawnGroup != SpawnGroup.MISC && CONFIG.blacklistedEntities.contains(id.toString())) {
+        if(entityType.spawnGroup != SpawnGroup.MISC && !CONFIG.blacklistedEntities.contains(id.toString())) {
             REGISTERED_PATTERNS[entityType] = Registry.register(LoomPatterns.REGISTRY, Identifier("${id}_banner"), EntityLoomPattern(entityType))
         }
     }

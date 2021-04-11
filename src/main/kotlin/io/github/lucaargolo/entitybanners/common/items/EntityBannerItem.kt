@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.EntityType
 import net.minecraft.item.BannerItem
+import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
@@ -14,6 +15,7 @@ import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
+import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.registry.Registry
 import net.minecraft.world.World
 
@@ -39,6 +41,15 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
             return TranslatableText("item.entitybanners.entity_banner", entityType.name)
         }
         return super.getName(stack)
+    }
+
+    override fun appendStacks(group: ItemGroup, stacks: DefaultedList<ItemStack>) {
+        if(group == ItemGroup.SEARCH || group == EntityBanners.CREATIVE_TAB) {
+            EntityBanners.REGISTERED_PATTERNS.forEach { (_, pattern) ->
+                stacks.add(getPatternStack(pattern))
+            }
+        }
+        super.appendStacks(group, stacks)
     }
 
     override fun getDefaultStack(): ItemStack {
