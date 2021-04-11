@@ -1,6 +1,6 @@
 <p align="center"><img src="https://i.imgur.com/a1NZffB.png" width="128" height="128"></p>
 <h3 align="center">Entity Banners</h3>
-<p align="center">A mod strongly inspired by Terraria, which adds entity specific banners that increase damage and defense against the entity for players nearby.</p>
+<p align="center">A Minecraft mod strongly inspired by Terraria, which adds entity specific banners that increase damage and defense against the entity for players nearby.</p>
 <p align="center">
   <a title="Fabric API" href="https://github.com/FabricMC/fabric">
     <img src="https://i.imgur.com/Ol1Tcf8.png" width="151" height="50" />
