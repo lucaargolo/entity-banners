@@ -49,7 +49,6 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
                 stacks.add(getPatternStack(pattern))
             }
         }
-        super.appendStacks(group, stacks)
     }
 
     override fun getDefaultStack(): ItemStack {

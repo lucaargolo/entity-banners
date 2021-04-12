@@ -79,14 +79,20 @@ object EntityBanners: ModInitializer {
     val REGISTERED_EGGS = linkedMapOf<EntityType<*>, SpawnEggItem>()
     val REGISTERED_PATTERNS = linkedMapOf<EntityType<*>, EntityLoomPattern>()
 
-    val ENTITY_BANNER_ITEM: EntityBannerItem = Registry.register(Registry.ITEM, ModIdentifier("entity_banner"), EntityBannerItem(Item.Settings().maxCount(16)))
-    val ENTITY_BANNER_STATUS_EFFECT: EntityBannerStatusEffect = Registry.register(Registry.STATUS_EFFECT, ModIdentifier("entity_banner_status_effect"), EntityBannerStatusEffect())
+    val ENTITY_BANNER_ITEM: EntityBannerItem by lazy {
+        Registry.register(Registry.ITEM, ModIdentifier("entity_banner"), EntityBannerItem(Item.Settings().group(CREATIVE_TAB).maxCount(16)))
+    }
+    val ENTITY_BANNER_STATUS_EFFECT: EntityBannerStatusEffect by lazy {
+        Registry.register(Registry.STATUS_EFFECT, ModIdentifier("entity_banner_status_effect"), EntityBannerStatusEffect())
+    }
 
     val DAMAGE_INCREASE = EntityAttributeModifier(UUID.fromString("7a0af36c-0f98-4627-8476-42c352bf3047"), "Entity banners damage increase", CONFIG.damageMultiplier, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
 
     private var tickDelay = 0
 
     override fun onInitialize() {
+        ENTITY_BANNER_ITEM.toString()
+        ENTITY_BANNER_STATUS_EFFECT.toString()
         ServerTickEvents.END_SERVER_TICK.register {
             if(tickDelay >= 20) {
                 tickDelay = 0
