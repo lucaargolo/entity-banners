@@ -41,7 +41,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
     modImplementation "com.github.FabLabsMC:banner-plus-plus:${project.bannerpp_version}"
-    include "io.github.fablabsmc:bannerpp:${project.bannerpp_version}"
+    include "com.github.FabLabsMC:banner-plus-plus:${project.bannerpp_version}"
 
     modRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
 	modRuntime "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
