@@ -1,6 +1,7 @@
 package io.github.lucaargolo.entitybanners.mixin;
 
 import io.github.lucaargolo.entitybanners.EntityBanners;
+import io.github.lucaargolo.entitybanners.mixed.BannerBlockEntityMixed;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -21,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(BannerBlockEntity.class)
-public class BannerBlockEntityMixin extends BlockEntity implements Tickable {
+public class BannerBlockEntityMixin extends BlockEntity implements BannerBlockEntityMixed, Tickable {
 
     int entitybanners_TickDelay = 0;
     EntityType<?> entitybanners_Entity = null;
@@ -61,4 +62,8 @@ public class BannerBlockEntityMixin extends BlockEntity implements Tickable {
         }
     }
 
+    @Override
+    public EntityType<?> entitybanners_getEntity() {
+        return entitybanners_Entity;
+    }
 }

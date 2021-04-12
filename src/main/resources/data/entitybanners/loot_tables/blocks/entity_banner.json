@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Patterns",
+                  "target": "BlockEntityTag.Patterns",
+                  "op": "replace"
+                },
+                {
+                  "source": "Bannerpp_LoomPatterns",
+                  "target": "BlockEntityTag.Bannerpp_LoomPatterns",
+                  "op": "replace"
+                },
+                {
+                  "source": "entitybanners_Entity",
+                  "target": "BlockEntityTag.entitybanners_Entity",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "entitybanners:entity_banner"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}
