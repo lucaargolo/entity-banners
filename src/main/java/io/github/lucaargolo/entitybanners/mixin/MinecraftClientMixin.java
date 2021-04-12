@@ -1,5 +1,6 @@
 package io.github.lucaargolo.entitybanners.mixin;
 
+import io.github.lucaargolo.entitybanners.utils.EntityBannerStatusEffectHolders;
 import io.github.lucaargolo.entitybanners.utils.RenderEntityCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
@@ -13,6 +14,7 @@ public class MinecraftClientMixin {
 
     @Inject(at = @At("HEAD"), method = "joinWorld")
     public void onJoinWorld(ClientWorld world, CallbackInfo ci) {
+        EntityBannerStatusEffectHolders.Client.INSTANCE.getEntitySet().clear();
         RenderEntityCache.INSTANCE.clear();
     }
 
