@@ -3,10 +3,12 @@ package io.github.lucaargolo.entitybanners.common.items
 import io.github.lucaargolo.entitybanners.EntityBanners
 import io.github.lucaargolo.entitybanners.utils.DyeColorUtils
 import io.github.lucaargolo.entitybanners.utils.EntityLoomPattern
+import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.EntityType
 import net.minecraft.item.BannerItem
+import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -50,6 +52,8 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
             }
         }
     }
+
+    override fun appendBlocks(map: MutableMap<Block, Item>?, item: Item?) { }
 
     override fun getDefaultStack(): ItemStack {
         return getPatternStack(EntityBanners.REGISTERED_PATTERNS[EntityType.ZOMBIE]!!)
