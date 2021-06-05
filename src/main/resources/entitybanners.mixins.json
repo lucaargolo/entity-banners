@@ -6,9 +6,11 @@
   "mixins": [
     "AbstractBlockMixin",
     "BannerBlockEntityMixin",
+    "BannerDuplicateRecipeMixin",
     "DyeColorAccessor",
     "RegistryMixin",
     "ServerPlayerEntityMixin",
+    "ShieldDecorationRecipeMixin",
     "SpawnEggItemAccessor"
   ],
   "client": [
