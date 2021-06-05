@@ -47,14 +47,22 @@ object EntityBannersClient: ClientModInitializer {
         renderDispatcher.setRenderShadows(true)
     }
 
-    fun drawBannerEffectTooltip(screen: HandledScreen<*>, screenX: Int, screenY: Int, matrixStack: MatrixStack, j: Int, iterable: Iterable<StatusEffectInstance>) {
-        for ((index, instance) in iterable.withIndex()) {
+    private var cachedStatusEffectIndex: Int = 0
+    private var cachedStatusEffectIterable: Iterable<StatusEffectInstance> = listOf()
+
+    fun scheduleBannerEffectTooltipDraw(j: Int, iterable: Iterable<StatusEffectInstance>) {
+        this.cachedStatusEffectIndex = j
+        this.cachedStatusEffectIterable = iterable
+    }
+
+    fun drawBannerEffectTooltip(screen: HandledScreen<*>, screenX: Int, screenY: Int, matrixStack: MatrixStack) {
+        for ((index, instance) in cachedStatusEffectIterable.withIndex()) {
             if (instance.effectType === ENTITY_BANNER_STATUS_EFFECT) {
                 val client = MinecraftClient.getInstance()
                 val mouseX = (client.mouse.x * client.window.scaledWidth.toDouble() / client.window.width.toDouble()).toInt()
                 val mouseY = (client.mouse.y * client.window.scaledHeight.toDouble() / client.window.height.toDouble()).toInt()
                 val x = screenX - 124
-                val y = screenY + j * index
+                val y = screenY + cachedStatusEffectIndex * index
                 if (mouseX >= x && mouseX <= x + 120 && mouseY >= y && mouseY <= y + 32) {
                     val textList: MutableList<Text> = ArrayList()
                     textList.add(TranslatableText("tooltip.entitybanners.status_effect1").formatted(Formatting.DARK_PURPLE))
