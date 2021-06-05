@@ -6,8 +6,9 @@
   "mixins": [
     "AbstractBlockMixin",
     "BannerBlockEntityMixin",
+    "AbstractBannerBlockMixin",
     "BannerDuplicateRecipeMixin",
-    "DyeColorAccessor",
+    "DyeColorMixin",
     "RegistryMixin",
     "ServerPlayerEntityMixin",
     "ShieldDecorationRecipeMixin",

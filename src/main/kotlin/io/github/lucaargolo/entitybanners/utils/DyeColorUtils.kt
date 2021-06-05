@@ -1,6 +1,6 @@
 package io.github.lucaargolo.entitybanners.utils
 
-import io.github.lucaargolo.entitybanners.mixin.DyeColorAccessor
+import io.github.lucaargolo.entitybanners.mixed.DyeColorMixed
 import net.minecraft.util.DyeColor
 import java.awt.Color
 import kotlin.math.abs
@@ -10,7 +10,7 @@ object DyeColorUtils {
 
     fun getDyeColorByColor(rgb: Int): DyeColor {
         val color = Color(rgb)
-        val dyeColors = DyeColor.values().associateWith { Color((it as DyeColorAccessor).color) }
+        val dyeColors = DyeColor.values().associateWith { Color((it as DyeColorMixed).entitybanners_getColor()) }
         val distances = linkedMapOf<Int, DyeColor>()
         for ((key, value) in dyeColors) {
             val distance = abs(color.red - value.red) + abs(color.green - value.green) + abs(color.blue - value.blue)

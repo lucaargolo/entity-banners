@@ -5,6 +5,7 @@ import com.google.gson.JsonParser
 import io.github.fablabsmc.fablabs.api.bannerpattern.v1.LoomPatterns
 import io.github.lucaargolo.entitybanners.common.effects.EntityBannerStatusEffect
 import io.github.lucaargolo.entitybanners.common.items.EntityBannerItem
+import io.github.lucaargolo.entitybanners.mixed.BannerBlockEntityMixed
 import io.github.lucaargolo.entitybanners.network.PacketCompendium
 import io.github.lucaargolo.entitybanners.utils.*
 import net.fabricmc.api.ModInitializer
@@ -14,6 +15,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.block.BlockState
+import net.minecraft.block.entity.BannerBlockEntity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.EntityAttributeModifier
@@ -29,13 +32,17 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.Util
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 import net.minecraft.util.registry.Registry
+import net.minecraft.world.World
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.io.File
 import java.io.PrintWriter
 import java.nio.file.Files
 import java.util.*
+import java.util.function.Consumer
 
 object EntityBanners: ModInitializer {
 
@@ -139,7 +146,7 @@ object EntityBanners: ModInitializer {
                                 player.sendMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), false)
                             }
                         }
-                        player.inventory.offerOrDrop(serverWorld, ENTITY_BANNER_ITEM.getPatternStack(loomPattern))
+                        player.inventory.offerOrDrop(ENTITY_BANNER_ITEM.getPatternStack(loomPattern))
                     }
                 }
             }
@@ -156,7 +163,24 @@ object EntityBanners: ModInitializer {
         }
     }
 
-    fun onPlayerNearBanner(player: ServerPlayerEntity, entityType: EntityType<*>) {
+    @Suppress("unused_parameter")
+    fun serverBannerBlockTick(world: World, pos: BlockPos, blockState: BlockState, entity: BannerBlockEntity) {
+        if ((entity as? BannerBlockEntityMixed)?.entitybanners_getEntity() != null) {
+            if (entity.entitybanners_getTickDelay() >= 20) {
+                entity.entitybanners_setTickDelay(0)
+                val r = CONFIG.bannerRadius.toDouble()
+                val effectArea = Box(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r)
+                val players: List<ServerPlayerEntity> = world.getNonSpectatingEntities(ServerPlayerEntity::class.java, effectArea)
+                players.forEach(Consumer { player: ServerPlayerEntity ->
+                    onPlayerNearBanner(player, entity.entitybanners_getEntity())
+                })
+            } else {
+                entity.entitybanners_setTickDelay(entity.entitybanners_getTickDelay()+1)
+            }
+        }
+    }
+
+    private fun onPlayerNearBanner(player: ServerPlayerEntity, entityType: EntityType<*>) {
         player.addStatusEffect(StatusEffectInstance(ENTITY_BANNER_STATUS_EFFECT, 200))
         EntityBannerStatusEffectHolders.Server.map.getOrPut(player) { linkedMapOf() }[entityType] = 40
         val entityTypeRaw = Registry.ENTITY_TYPE.getRawId(entityType)

@@ -28,12 +28,12 @@ import java.util.List;
 public class BannerBlockEntityRendererMixin {
 
     @SuppressWarnings({"JavaReflectionMemberAccess", "unchecked"})
-    @Inject(at = @At("RETURN"), method = "renderCanvas")
+    @Inject(at = @At("RETURN"), method = "renderCanvas(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/model/ModelPart;Lnet/minecraft/client/util/SpriteIdentifier;ZLjava/util/List;Z)V")
     private static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns, boolean bl, CallbackInfo ci) {
         try {
             Object object = BannerBlockEntityRenderer.class.getDeclaredField("loomPatterns").get(null);
             ((List<LoomPatternData>) object).forEach(loomPatternData -> {
-                LoomPattern customPattern = loomPatternData.pattern;
+                LoomPattern customPattern = loomPatternData.pattern();
                 if(customPattern instanceof EntityLoomPattern) {
                     MinecraftClient client = MinecraftClient.getInstance();
                     EntityType<?> type = ((EntityLoomPattern) customPattern).getEntityType();

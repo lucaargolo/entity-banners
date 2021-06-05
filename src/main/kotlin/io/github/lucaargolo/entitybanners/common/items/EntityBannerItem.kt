@@ -11,8 +11,8 @@ import net.minecraft.item.BannerItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.nbt.ListTag
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtList
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
@@ -70,28 +70,28 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
         val id = Registry.ENTITY_TYPE.getId(entityPattern.entityType)
         val bannerStack = ItemStack(EntityBanners.ENTITY_BANNER_ITEM)
         val bannerTag = bannerStack.orCreateTag
-        val blockEntityTag = CompoundTag()
-        val loomPatternsTag = ListTag()
-        val entityPatternTag = CompoundTag()
+        val blockEntityTag = NbtCompound()
+        val loomPatternsTag = NbtList()
+        val entityPatternTag = NbtCompound()
         entityPatternTag.putString("Pattern", "${id}_banner")
         entityPatternTag.putInt("Index", 0)
         entityPatternTag.putInt("Color", secondaryColor.id)
         loomPatternsTag.add(entityPatternTag)
         blockEntityTag.put("Bannerpp_LoomPatterns", loomPatternsTag)
-        val patternsTag = ListTag()
-        val ttsPattern = CompoundTag()
+        val patternsTag = NbtList()
+        val ttsPattern = NbtCompound()
         ttsPattern.putString("Pattern", "tts")
         ttsPattern.putInt("Color", primaryColor.id)
         patternsTag.add(ttsPattern)
-        val btsPattern = CompoundTag()
+        val btsPattern = NbtCompound()
         btsPattern.putString("Pattern", "bts")
         btsPattern.putInt("Color", primaryColor.id)
         patternsTag.add(btsPattern)
-        val boPattern = CompoundTag()
+        val boPattern = NbtCompound()
         boPattern.putString("Pattern", "bo")
         boPattern.putInt("Color", primaryColor.id)
         patternsTag.add(boPattern)
-        val csPattern = CompoundTag()
+        val csPattern = NbtCompound()
         csPattern.putString("Pattern", "cs")
         csPattern.putInt("Color", secondaryColor.id)
         patternsTag.add(csPattern)

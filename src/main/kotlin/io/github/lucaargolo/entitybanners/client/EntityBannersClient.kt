@@ -9,7 +9,6 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.entity.EntityRenderDispatcher
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.client.util.math.Vector3f
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
@@ -17,6 +16,7 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
+import net.minecraft.util.math.Vec3f
 import java.util.function.Consumer
 
 object EntityBannersClient: ClientModInitializer {
@@ -39,9 +39,9 @@ object EntityBannersClient: ClientModInitializer {
         matrices.translate(0.0, 1.2+(((1.3*height)/2.0)/2.0), 0.0)
         matrices.scale(0.6f, 0.6f, 0.02f)
         matrices.scale((width/entity.boundingBox.xLength).toFloat(), (width/entity.boundingBox.xLength).toFloat(), (width/entity.boundingBox.xLength).toFloat())
-        matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0f))
-        matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-30.0f))
-        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(225.0f))
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0f))
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-30.0f))
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(225.0f))
         renderDispatcher.setRenderShadows(false)
         renderDispatcher.render<Entity>(entity, 0.0, 0.0, 0.0, 0f, 0f, matrices, vertexConsumers, light)
         renderDispatcher.setRenderShadows(true)
