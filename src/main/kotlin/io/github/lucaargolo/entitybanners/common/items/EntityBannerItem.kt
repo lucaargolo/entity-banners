@@ -24,8 +24,8 @@ import net.minecraft.world.World
 class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Blocks.WHITE_WALL_BANNER, settings) {
 
     override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
-        if(stack.hasTag()) {
-            val entityString = stack.orCreateTag.getCompound("BlockEntityTag").getString("entitybanners_Entity")
+        if(stack.hasNbt()) {
+            val entityString = stack.orCreateNbt.getCompound("BlockEntityTag").getString("entitybanners_Entity")
             val entityIdentifier = Identifier(entityString)
             val entityType = Registry.ENTITY_TYPE.get(entityIdentifier)
             tooltip.add(TranslatableText("tooltip.entitybanners.nearby_players1").formatted(Formatting.ITALIC, Formatting.DARK_PURPLE))
@@ -36,8 +36,8 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
     override fun getName(): Text = TranslatableText("item.entitybanners.entity_banner", "Entity")
 
     override fun getName(stack: ItemStack): Text {
-        if(stack.hasTag()) {
-            val entityString = stack.orCreateTag.getCompound("BlockEntityTag").getString("entitybanners_Entity")
+        if(stack.hasNbt()) {
+            val entityString = stack.orCreateNbt.getCompound("BlockEntityTag").getString("entitybanners_Entity")
             val entityIdentifier = Identifier(entityString)
             val entityType = Registry.ENTITY_TYPE.get(entityIdentifier)
             return TranslatableText("item.entitybanners.entity_banner", entityType.name)
@@ -69,7 +69,7 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
         }
         val id = Registry.ENTITY_TYPE.getId(entityPattern.entityType)
         val bannerStack = ItemStack(EntityBanners.ENTITY_BANNER_ITEM)
-        val bannerTag = bannerStack.orCreateTag
+        val bannerTag = bannerStack.orCreateNbt
         val blockEntityTag = NbtCompound()
         val loomPatternsTag = NbtList()
         val entityPatternTag = NbtCompound()
