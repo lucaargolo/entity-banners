@@ -141,7 +141,7 @@ object EntityBanners: ModInitializer {
                     if (killed > 0 && killed % CONFIG.necessaryKills == 0) {
                         if(CONFIG.shouldBroadcastWhenGivenBanner) {
                             if(CONFIG.shouldBroadcastToEveryone) {
-                                serverWorld.server.playerManager.broadcastChatMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), MessageType.CHAT, Util.NIL_UUID)
+                                serverWorld.server.playerManager.broadcast(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), MessageType.CHAT, Util.NIL_UUID)
                             }else{
                                 player.sendMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), false)
                             }

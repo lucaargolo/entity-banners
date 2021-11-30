@@ -27,7 +27,7 @@ public class BannerBlockEntityMixin implements BannerBlockEntityMixed {
     }
 
     @Inject(at = @At("HEAD"), method = "writeNbt")
-    public void onWriteNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
+    public void onWriteNbt(NbtCompound nbt, CallbackInfo ci) {
         if(entitybanners_Entity != null) {
             Identifier identifier = Registry.ENTITY_TYPE.getId(entitybanners_Entity);
             nbt.putString("entitybanners_Entity", identifier.toString());

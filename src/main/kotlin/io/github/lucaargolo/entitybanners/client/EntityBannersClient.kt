@@ -47,33 +47,25 @@ object EntityBannersClient: ClientModInitializer {
         renderDispatcher.setRenderShadows(true)
     }
 
-    private var cachedStatusEffectIndex: Int = 0
-    private var cachedStatusEffectIterable: Iterable<StatusEffectInstance> = listOf()
-
-    fun scheduleBannerEffectTooltipDraw(j: Int, iterable: Iterable<StatusEffectInstance>) {
-        this.cachedStatusEffectIndex = j
-        this.cachedStatusEffectIterable = iterable
-    }
-
-    fun drawBannerEffectTooltip(screen: HandledScreen<*>, screenX: Int, screenY: Int, matrixStack: MatrixStack) {
-        for ((index, instance) in cachedStatusEffectIterable.withIndex()) {
+    fun drawBannerEffectTooltip(screen: HandledScreen<*>, iterable: Iterable<StatusEffectInstance>, x: Int, y: Int, matrixStack: MatrixStack) {
+        val client = MinecraftClient.getInstance()
+        val mouseX = (client.mouse.x * client.window.scaledWidth.toDouble() / client.window.width.toDouble()).toInt()
+        val mouseY = (client.mouse.y * client.window.scaledHeight.toDouble() / client.window.height.toDouble()).toInt()
+        for ((index, instance) in iterable.withIndex()) {
             if (instance.effectType === ENTITY_BANNER_STATUS_EFFECT) {
-                val client = MinecraftClient.getInstance()
-                val mouseX = (client.mouse.x * client.window.scaledWidth.toDouble() / client.window.width.toDouble()).toInt()
-                val mouseY = (client.mouse.y * client.window.scaledHeight.toDouble() / client.window.height.toDouble()).toInt()
-                val x = screenX - 124
-                val y = screenY + cachedStatusEffectIndex * index
-                if (mouseX >= x && mouseX <= x + 120 && mouseY >= y && mouseY <= y + 32) {
-                    val textList: MutableList<Text> = ArrayList()
-                    textList.add(TranslatableText("tooltip.entitybanners.status_effect1").formatted(Formatting.DARK_PURPLE))
-                    textList.add(TranslatableText("tooltip.entitybanners.status_effect2").formatted(Formatting.DARK_PURPLE))
-                    EntityBannerStatusEffectHolders.Client.entitySet.forEach(Consumer { entityType: EntityType<*> ->
-                        textList.add(entityType.name.copy().formatted(Formatting.GRAY))
-                    })
-                    screen.renderTooltip(matrixStack, textList, mouseX, mouseY)
+                if (mouseX >= x && mouseX <= x + 120 && mouseY >= y + 32*index && mouseY <= y + 32*index + 32) {
+                    screen.renderTooltip(matrixStack, ArrayList<Text>().also(::appendBannerTooltip), mouseX, mouseY)
                 }
             }
         }
+    }
+
+    fun appendBannerTooltip(list: MutableList<Text>) {
+        list.add(TranslatableText("tooltip.entitybanners.status_effect1").formatted(Formatting.DARK_PURPLE))
+        list.add(TranslatableText("tooltip.entitybanners.status_effect2").formatted(Formatting.DARK_PURPLE))
+        EntityBannerStatusEffectHolders.Client.entitySet.forEach(Consumer { entityType: EntityType<*> ->
+            list.add(entityType.name.copy().formatted(Formatting.GRAY))
+        })
     }
 
 }
