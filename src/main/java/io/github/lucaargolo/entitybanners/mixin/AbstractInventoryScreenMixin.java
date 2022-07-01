@@ -28,14 +28,14 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
     }
 
     @Inject(at = @At("TAIL"), method = "drawStatusEffects", locals = LocalCapture.CAPTURE_FAILSOFT)
-    public void onFinishRender(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection<StatusEffectInstance> collection, boolean bl, int k, Iterable<StatusEffectInstance> iterable) {
+    public void entitybanners_drawCustomTooltip(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection<StatusEffectInstance> collection, boolean bl, int k, Iterable<StatusEffectInstance> iterable) {
         if(bl) {
             EntityBannersClient.INSTANCE.drawBannerEffectTooltip(this, iterable, i, this.y, matrices);
         }
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;renderTooltip(Lnet/minecraft/client/util/math/MatrixStack;Ljava/util/List;Ljava/util/Optional;II)V"), method = "drawStatusEffects", locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-    public void onRenderTooltip(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection<StatusEffectInstance> collection, boolean bl, int k, Iterable<StatusEffectInstance> iterable, int l, StatusEffectInstance statusEffectInstance, List<Text> list) {
+    public void entitybanners_renderCustomTooltip(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection<StatusEffectInstance> collection, boolean bl, int k, Iterable<StatusEffectInstance> iterable, int l, StatusEffectInstance statusEffectInstance, List<Text> list) {
         if(statusEffectInstance.getEffectType() == EntityBanners.INSTANCE.getENTITY_BANNER_STATUS_EFFECT()) {
             List<Text> newList = new ArrayList<>(list);
             EntityBannersClient.INSTANCE.appendBannerTooltip(newList);

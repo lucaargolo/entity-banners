@@ -1,14 +1,11 @@
 package io.github.lucaargolo.entitybanners.utils
 
-import io.github.fablabsmc.fablabs.api.bannerpattern.v1.LoomPattern
 import io.github.lucaargolo.entitybanners.EntityBanners
 import io.github.lucaargolo.entitybanners.mixin.SpawnEggItemAccessor
+import net.minecraft.block.entity.BannerPattern
 import net.minecraft.entity.EntityType
-import net.minecraft.util.Identifier
 
-class EntityLoomPattern(val entityType: EntityType<*>): LoomPattern(true) {
-
-    override fun getSpriteId(type: String?) = Identifier("entity/banner/base")
+class EntityLoomPattern(val entityType: EntityType<*>, id: String): BannerPattern(id) {
 
     val primaryColor: Int
         get() = (EntityBanners.REGISTERED_EGGS[entityType] as? SpawnEggItemAccessor)?.primaryColor ?: 0

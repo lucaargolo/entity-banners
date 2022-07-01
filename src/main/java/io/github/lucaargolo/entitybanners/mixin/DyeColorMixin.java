@@ -19,7 +19,7 @@ public class DyeColorMixin implements DyeColorMixed {
     }
 
     @Inject(at = @At("TAIL"), method = "<init>")
-    public void atInit(String enumName, int ordinal, int woolId, String name, int color, MapColor mapColor, int fireworkColor, int signColor, CallbackInfo ci) {
+    public void entitybanners_assignBannerColor(String enumName, int ordinal, int woolId, String name, int color, MapColor mapColor, int fireworkColor, int signColor, CallbackInfo ci) {
         this.entitybanners_color = color;
     }
 

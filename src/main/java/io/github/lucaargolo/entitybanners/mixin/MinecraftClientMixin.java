@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftClientMixin {
 
     @Inject(at = @At("HEAD"), method = "joinWorld")
-    public void onJoinWorld(ClientWorld world, CallbackInfo ci) {
+    public void entitybanners_cleanCachesOnJoin(ClientWorld world, CallbackInfo ci) {
         EntityBannerStatusEffectHolders.Client.INSTANCE.getEntitySet().clear();
         RenderEntityCache.INSTANCE.clear();
     }

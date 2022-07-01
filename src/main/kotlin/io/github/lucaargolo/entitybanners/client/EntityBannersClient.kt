@@ -14,7 +14,6 @@ import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.text.Text
-import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
 import net.minecraft.util.math.Vec3f
 import java.util.function.Consumer
@@ -61,8 +60,8 @@ object EntityBannersClient: ClientModInitializer {
     }
 
     fun appendBannerTooltip(list: MutableList<Text>) {
-        list.add(TranslatableText("tooltip.entitybanners.status_effect1").formatted(Formatting.DARK_PURPLE))
-        list.add(TranslatableText("tooltip.entitybanners.status_effect2").formatted(Formatting.DARK_PURPLE))
+        list.add(Text.translatable("tooltip.entitybanners.status_effect1").formatted(Formatting.DARK_PURPLE))
+        list.add(Text.translatable("tooltip.entitybanners.status_effect2").formatted(Formatting.DARK_PURPLE))
         EntityBannerStatusEffectHolders.Client.entitySet.forEach(Consumer { entityType: EntityType<*> ->
             list.add(entityType.name.copy().formatted(Formatting.GRAY))
         })

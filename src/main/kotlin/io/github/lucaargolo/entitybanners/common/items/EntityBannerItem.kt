@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtList
 import net.minecraft.text.Text
-import net.minecraft.text.TranslatableText
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.collection.DefaultedList
@@ -28,19 +27,19 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
             val entityString = stack.orCreateNbt.getCompound("BlockEntityTag").getString("entitybanners_Entity")
             val entityIdentifier = Identifier(entityString)
             val entityType = Registry.ENTITY_TYPE.get(entityIdentifier)
-            tooltip.add(TranslatableText("tooltip.entitybanners.nearby_players1").formatted(Formatting.ITALIC, Formatting.DARK_PURPLE))
-            tooltip.add(TranslatableText("tooltip.entitybanners.nearby_players2", entityType.name.copy().formatted(Formatting.GRAY)).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE))
+            tooltip.add(Text.translatable("tooltip.entitybanners.nearby_players1").formatted(Formatting.ITALIC, Formatting.DARK_PURPLE))
+            tooltip.add(Text.translatable("tooltip.entitybanners.nearby_players2", entityType.name.copy().formatted(Formatting.GRAY)).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE))
         }
     }
 
-    override fun getName(): Text = TranslatableText("item.entitybanners.entity_banner", "Entity")
+    override fun getName(): Text = Text.translatable("item.entitybanners.entity_banner", "Entity")
 
     override fun getName(stack: ItemStack): Text {
         if(stack.hasNbt()) {
             val entityString = stack.orCreateNbt.getCompound("BlockEntityTag").getString("entitybanners_Entity")
             val entityIdentifier = Identifier(entityString)
             val entityType = Registry.ENTITY_TYPE.get(entityIdentifier)
-            return TranslatableText("item.entitybanners.entity_banner", entityType.name)
+            return Text.translatable("item.entitybanners.entity_banner", entityType.name)
         }
         return super.getName(stack)
     }
@@ -71,14 +70,12 @@ class EntityBannerItem(settings: Settings): BannerItem(Blocks.WHITE_BANNER, Bloc
         val bannerStack = ItemStack(EntityBanners.ENTITY_BANNER_ITEM)
         val bannerTag = bannerStack.orCreateNbt
         val blockEntityTag = NbtCompound()
-        val loomPatternsTag = NbtList()
+        val patternsTag = NbtList()
         val entityPatternTag = NbtCompound()
-        entityPatternTag.putString("Pattern", "${id}_banner")
+        entityPatternTag.putString("Pattern", "${id.namespace}_${id.path}_entity_banner")
         entityPatternTag.putInt("Index", 0)
         entityPatternTag.putInt("Color", secondaryColor.id)
-        loomPatternsTag.add(entityPatternTag)
-        blockEntityTag.put("Bannerpp_LoomPatterns", loomPatternsTag)
-        val patternsTag = NbtList()
+        patternsTag.add(entityPatternTag)
         val ttsPattern = NbtCompound()
         ttsPattern.putString("Pattern", "tts")
         ttsPattern.putInt("Color", primaryColor.id)

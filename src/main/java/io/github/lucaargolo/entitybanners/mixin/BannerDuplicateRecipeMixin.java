@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BannerDuplicateRecipe.class)
 public class BannerDuplicateRecipeMixin {
 
-    @Inject(at = @At("RETURN"), method = "matches", cancellable = true)
-    public void matches(CraftingInventory craftingInventory, World world, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(at = @At("RETURN"), method = "matches(Lnet/minecraft/inventory/CraftingInventory;Lnet/minecraft/world/World;)Z", cancellable = true)
+    public void entitybanners_fixDuplicateRecipe(CraftingInventory craftingInventory, World world, CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValue()) {
             for(int i = 0; i < craftingInventory.size(); ++i) {
                 ItemStack stack = craftingInventory.getStack(i);

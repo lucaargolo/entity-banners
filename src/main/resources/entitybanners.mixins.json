@@ -4,10 +4,11 @@
   "package": "io.github.lucaargolo.entitybanners.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AbstractBannerBlockMixin",
     "AbstractBlockMixin",
     "BannerBlockEntityMixin",
-    "AbstractBannerBlockMixin",
     "BannerDuplicateRecipeMixin",
+    "BannerPatternMixin",
     "DyeColorMixin",
     "RegistryMixin",
     "ServerPlayerEntityMixin",

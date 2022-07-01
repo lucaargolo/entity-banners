@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BannerBlockEntity.class)
 public class BannerBlockEntityMixin implements BannerBlockEntityMixed {
@@ -19,7 +18,7 @@ public class BannerBlockEntityMixin implements BannerBlockEntityMixed {
     private EntityType<?> entitybanners_Entity = null;
 
     @Inject(at = @At("HEAD"), method = "readNbt")
-    public void onReadNbt(NbtCompound nbt, CallbackInfo ci) {
+    public void entitybanners_readCustomNbt(NbtCompound nbt, CallbackInfo ci) {
         if(nbt.contains("entitybanners_Entity")) {
             Identifier identifier = new Identifier(nbt.getString("entitybanners_Entity"));
             entitybanners_Entity = Registry.ENTITY_TYPE.get(identifier);
@@ -27,7 +26,7 @@ public class BannerBlockEntityMixin implements BannerBlockEntityMixed {
     }
 
     @Inject(at = @At("HEAD"), method = "writeNbt")
-    public void onWriteNbt(NbtCompound nbt, CallbackInfo ci) {
+    public void entitybanners_writeCustomNbt(NbtCompound nbt, CallbackInfo ci) {
         if(entitybanners_Entity != null) {
             Identifier identifier = Registry.ENTITY_TYPE.getId(entitybanners_Entity);
             nbt.putString("entitybanners_Entity", identifier.toString());

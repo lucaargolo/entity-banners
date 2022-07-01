@@ -34,9 +34,9 @@
     "entitybanners.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.5",
-    "fabric": ">=0.43.1",
-    "fabric-language-kotlin": ">=1.6.0",
-    "minecraft": "1.18.x"
+    "fabricloader": ">=0.14.8",
+    "fabric": ">=0.57.0",
+    "fabric-language-kotlin": ">=1.8.0",
+    "minecraft": "1.19.x"
   }
 }

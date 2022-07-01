@@ -22,7 +22,7 @@ public class ServerPlayerEntityMixin {
 
     @SuppressWarnings("SuspiciousMethodCalls")
     @ModifyVariable(method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At("HEAD"), argsOnly = true)
-    private float onDamage(float amount, DamageSource source) {
+    private float entitybanners_injectCustomDamage(float amount, DamageSource source) {
         Entity entity = source.getSource();
         if(entity instanceof LivingEntity) {
             LinkedHashMap<EntityType<?>, Integer> map = EntityBannerStatusEffectHolders.Server.INSTANCE.getMap().get(this);
@@ -35,7 +35,7 @@ public class ServerPlayerEntityMixin {
 
     @SuppressWarnings("ConstantConditions")
     @Inject(at = @At("HEAD"), method = "attack")
-    public void onBeginAttack(Entity target, CallbackInfo ci) {
+    public void entitybanners_injectCustomAttack(Entity target, CallbackInfo ci) {
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) ((Object) this);
         LinkedHashMap<EntityType<?>, Integer> map = EntityBannerStatusEffectHolders.Server.INSTANCE.getMap().get(serverPlayerEntity);
         if(map != null && map.containsKey(target.getType())) {

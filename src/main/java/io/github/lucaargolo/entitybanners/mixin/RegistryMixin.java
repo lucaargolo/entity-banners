@@ -14,12 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class RegistryMixin {
 
     @Inject(at = @At("HEAD"), method = "register(Lnet/minecraft/util/registry/Registry;Lnet/minecraft/util/Identifier;Ljava/lang/Object;)Ljava/lang/Object;")
-    private static <V, T extends V> void onRegistryRegister(Registry<V> registry, Identifier id, T entry, CallbackInfoReturnable<T> cir) {
-        if(entry instanceof SpawnEggItem) {
-            SpawnEggItem item = (SpawnEggItem) entry;
+    private static <V, T extends V> void entitybanners_registerBannersOnEntityEggRegistry(Registry<V> registry, Identifier id, T entry, CallbackInfoReturnable<T> cir) {
+        if(entry instanceof SpawnEggItem item) {
             EntityBanners.INSTANCE.onEggRegistered(item);
-        }else if(entry instanceof EntityType<?>) {
-            EntityType<?> entityType = (EntityType<?>) entry;
+        }else if(entry instanceof EntityType<?> entityType) {
             EntityBanners.INSTANCE.onEntityRegistered(entityType, id);
         }
     }

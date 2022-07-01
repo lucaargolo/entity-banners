@@ -24,7 +24,7 @@ import java.util.List;
 public class AbstractBlockMixin {
 
     @Inject(at = @At("HEAD"), method = "getDroppedStacks", cancellable = true)
-    public void getDroppedStacks(BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> cir) {
+    public void entitybanners_fixDroppedStacks(BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> cir) {
         BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
         if(blockEntity instanceof BannerBlockEntityMixed) {
             EntityType<?> entityType = ((BannerBlockEntityMixed) blockEntity).entitybanners_getEntity();

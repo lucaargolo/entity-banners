@@ -2,7 +2,6 @@ package io.github.lucaargolo.entitybanners
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import io.github.fablabsmc.fablabs.api.bannerpattern.v1.LoomPatterns
 import io.github.lucaargolo.entitybanners.common.effects.EntityBannerStatusEffect
 import io.github.lucaargolo.entitybanners.common.items.EntityBannerItem
 import io.github.lucaargolo.entitybanners.mixed.BannerBlockEntityMixed
@@ -25,13 +24,12 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.SpawnEggItem
-import net.minecraft.network.MessageType
+import net.minecraft.network.message.MessageType
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.stat.Stats
-import net.minecraft.text.TranslatableText
+import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
-import net.minecraft.util.Util
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.registry.Registry
@@ -50,7 +48,6 @@ object EntityBanners: ModInitializer {
     private val LOGGER: Logger = LogManager.getLogger("Entity Banners")
 
     val CONFIG: ModConfig by lazy {
-        val parser = JsonParser()
         val gson = GsonBuilder().setPrettyPrinting().create()
         val configFile = File("${FabricLoader.getInstance().configDir}${File.separator}${MOD_ID}.json")
         var finalConfig: ModConfig
@@ -58,7 +55,7 @@ object EntityBanners: ModInitializer {
         try {
             if (configFile.createNewFile()) {
                 LOGGER.info("No config file found, creating a new one...")
-                val json: String = gson.toJson(parser.parse(gson.toJson(ModConfig())))
+                val json: String = gson.toJson(JsonParser.parseString(gson.toJson(ModConfig())))
                 PrintWriter(configFile).use { out -> out.println(json) }
                 finalConfig = ModConfig()
                 LOGGER.info("Successfully created default config file.")
@@ -141,9 +138,9 @@ object EntityBanners: ModInitializer {
                     if (killed > 0 && killed % CONFIG.necessaryKills == 0) {
                         if(CONFIG.shouldBroadcastWhenGivenBanner) {
                             if(CONFIG.shouldBroadcastToEveryone) {
-                                serverWorld.server.playerManager.broadcast(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), MessageType.CHAT, Util.NIL_UUID)
+                                serverWorld.server.playerManager.broadcast(Text.translatable("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), MessageType.CHAT)
                             }else{
-                                player.sendMessage(TranslatableText("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), false)
+                                player.sendMessage(Text.translatable("chat.entitybanners.killed_n_entities", player.name, killed, livingEntity.type.name).formatted(Formatting.GOLD), false)
                             }
                         }
                         player.inventory.offerOrDrop(ENTITY_BANNER_ITEM.getPatternStack(loomPattern))
@@ -159,7 +156,7 @@ object EntityBanners: ModInitializer {
 
     fun onEntityRegistered(entityType: EntityType<*>, id: Identifier) {
         if(entityType.spawnGroup != SpawnGroup.MISC && !CONFIG.blacklistedEntities.contains(id.toString())) {
-            REGISTERED_PATTERNS[entityType] = Registry.register(LoomPatterns.REGISTRY, Identifier("${id}_banner"), EntityLoomPattern(entityType))
+            REGISTERED_PATTERNS[entityType] = Registry.register(Registry.BANNER_PATTERN, ModIdentifier("${id.namespace}_${id.path}_entity_banner"), EntityLoomPattern(entityType, "${id.namespace}_${id.path}_entity_banner"))
         }
     }
 
